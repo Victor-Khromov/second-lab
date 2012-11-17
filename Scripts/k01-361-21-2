@@ -1,0 +1,32 @@
+#!/bin/bash
+echo "Описание: ..."
+echo "Начать? (y/n): ";
+program='y'
+while [ $program = "y" -o $program = "Y" ]; do
+read program;
+if [ $program = "y" -o $program = "Y" ]; then
+echo "Введите имя пользователя"
+read USERNAME
+
+if ! [ $(getent passwd $USERNAME ) ]; then # проверка на наличие пользователя
+echo "Такого пользователя нет"
+else
+echo "Введите минимальное время жизни пароля"
+read min
+echo "Введите максимальное время жизни пароля"
+read max
+read new
+passwd -n $min $USERNAME
+passwd -x $max $USERNAME
+passwd $USERNAME
+echo "Новый пароль и ограничения время его жизни установлены"
+fi
+echo "Повторить? (y/n): ";
+program=y
+elif [ $program = "n" -o $program = "N" ]; then
+echo "Завершено"
+
+else echo "Ошибка! Введите y или n:"
+program=y
+fi
+done
